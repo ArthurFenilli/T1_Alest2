@@ -4,19 +4,21 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.LinkedList;
-import java.util.Scanner;
 
-public class algoLinkedList {
+class algoLinkedListV2 {
+    private DoubleLinkedListOfChar lista;
 
-    private LinkedList<Character> lista;
-
-    public algoLinkedList (){
-        lista = new LinkedList<Character>();
+    public algoLinkedListV2(){
+        lista = new DoubleLinkedListOfChar();
     }
 
+    public DoubleLinkedListOfChar getLista(){
+        return lista;
+    }
+
+
     public void preencheLista(){
-        Path path = Paths.get("caso10k.txt");//coloque aqui o arquivo que deseja-se ler!!!
+        Path path = Paths.get("caso30000k.txt");//coloque aqui o arquivo que deseja-se ler!!!
         try (BufferedReader br = Files.newBufferedReader(path,Charset.defaultCharset())) {
         String linha = null;
         while ((linha = br.readLine()) != null) {
@@ -35,63 +37,48 @@ public class algoLinkedList {
         catch (IOException e) {
             System.err.format("Erro na leitura de arquivos:" + e);
         }
-        //for (char c : lista) {
-            //System.out.print(c);
+        //for (int i = 0; i<lista.size();i++) {
+            //System.out.print(lista.get(i));
             
         //}
     
         //System.out.print(lista.size());
+        //System.out.print(lista.getMarkElement());
         
-    }
-
-    public void mutacao(){
-        boolean pass = false;
-
-        //while(lista.length > 1)
-        int i = 0;
-        while( i<lista.size() - 1){
-            //for (char c:lista) {    //cuidado, recomendado apenas para cadeias pequenas!!!
-                //System.out.print(c);
-            //}
-            //System.out.println(i);
-            //System.out.println("");
-            if(lista.get(i) != lista.get(i + 1)){
-                if((lista.get(i) == 'D' && lista.get(i + 1) == 'N') || (lista.get(i) == 'N' && lista.get(i + 1) == 'D')){
-                    lista.remove(i);
-                    lista.remove(i);
-                    lista.add('A');
-
-                }
-                else if((lista.get(i) == 'D' && lista.get(i + 1) == 'A') || (lista.get(i) == 'A' && lista.get(i + 1) == 'D')){
-                    lista.remove(i);
-                    lista.remove(i);
-                    lista.add('N');
-
-                }
-                else{
-                    lista.remove(i);
-                    lista.remove(i);
-                    lista.add('D');
-                }
-                i = -1;
-            }
-            i++;
-
-        }
-
     }
 
 
     public void mutacaoV2(){
-        //Collections.sort(lista);
-        //while(lista.length > 1)
-        int marcador = 0;
         int i = 0;
         while( i<lista.size() - 1){
-            
-           
 
 
+            if(lista.getMarkElement() == lista.getNextMarkElement()){
+                lista.setMark(0);
+                i++;
+            }
+            else{
+                if(lista.getMarkElement() == 'D' && lista.getNextMarkElement() == 'N' || lista.getMarkElement() == 'N' && lista.getNextMarkElement() == 'D'  ){
+                    lista.removeByMark(i);
+                    lista.add('A');
+                    
+                }
+                else if(lista.getMarkElement() == 'D' && lista.getNextMarkElement() == 'A' || lista.getMarkElement() == 'A' && lista.getNextMarkElement() == 'D'  ){
+                    lista.removeByMark(i);
+                    lista.add('N');
+
+                }
+                else{
+                     lista.removeByMark(i);
+                     lista.add('D');
+
+                }
+                if(i > 0){
+                    i--;
+                }
+               
+            }
+    /* 
             if(lista.get(i) != lista.get(i + 1)){
                 if((lista.get(i) == 'D' && lista.get(i + 1) == 'N') || (lista.get(i) == 'N' && lista.get(i + 1) == 'D')){
                     lista.remove(i);
@@ -123,6 +110,7 @@ public class algoLinkedList {
                 marcador = i;
 
             }
+            */
 
         }
 
@@ -130,13 +118,19 @@ public class algoLinkedList {
 
 
 
+
+
+
+
     public static void main(String args[]){
-        algoLinkedList l = new algoLinkedList();
+        algoLinkedListV2 l = new algoLinkedListV2();
         l.preencheLista();
         l.mutacaoV2();
-        for(char c : l.lista){
-            System.out.print(c);
+        for(int i =0; i<l.getLista().size();i++){
+            System.out.print(l.getLista().get(i));
         }
     }
-    
+
+
+   
 }
