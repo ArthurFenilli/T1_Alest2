@@ -125,10 +125,14 @@ class algoLinkedListV2 {
     public static void main(String args[]){
         algoLinkedListV2 l = new algoLinkedListV2();
         l.preencheLista();
+        double start = System.currentTimeMillis();
         l.mutacaoV2();
+        double fim = System.currentTimeMillis();
         for(int i =0; i<l.getLista().size();i++){
             System.out.print(l.getLista().get(i));
         }
+        System.out.println("");
+        System.out.println(fim - start);
     }
 
 
